@@ -1,0 +1,42 @@
+clear all;
+clc;
+close all;
+
+cd = 0.2;
+cd_rot = 0.4;
+mom_inertia = 1000;
+mass = 300;
+length = 3;
+
+x_0 = [1, 2, 1.107, 0]
+u_0 = [(cd/mass) * sqrt(5)/cos(1.107), 0]
+
+boat_dyn(x_0, u_0)
+
+a_matrix = zeros(4);
+delta = 0.01;
+
+for i = 1:4
+    delta_vector = [0, 0, 0, 0];
+    delta_vector(i) = delta;
+    a_matrix(:, i) = (boat_dyn(x_0 + delta_vector, u_0) - boat_dyn(x_0, u_0)) / delta;
+end
+
+a_matrix
+
+b_matrix = zeros(4, 2);
+delta = 0.01;
+
+for i = 1:2
+    delta_vector = [0, 0];
+    delta_vector(i) = delta;
+    b_matrix(:, i) = (boat_dyn(x_0, u_0 + delta_vector) - boat_dyn(x_0, u_0)) / delta;
+end
+
+b_matrix
+
+time = 0:0.01:100;
+thrust = timeseries(u_0(1), time);
+thrust_ang = timeseries(u_0(2), time);
+
+ve
